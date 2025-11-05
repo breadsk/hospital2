@@ -22,9 +22,6 @@ public class Patient {
     private String rut;
 
     @Column(nullable = false)
-    private String names;
-
-    @Column(nullable = false)
     private String firstName;
 
     @Column(nullable = false)
