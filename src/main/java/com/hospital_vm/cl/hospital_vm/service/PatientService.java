@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,8 +20,9 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Patient findById(long id) {
-        return patientRepository.findById(id).get();
+    public Patient findById(Long id) {
+        Optional<Patient> patient = patientRepository.findById(id);
+        return patient.orElseThrow(() -> new RuntimeException("Paciente no encontrado con ID: " + id));
     }
 
     public Patient save(Patient patient) {
