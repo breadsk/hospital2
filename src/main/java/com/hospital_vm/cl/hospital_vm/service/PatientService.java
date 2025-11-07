@@ -33,4 +33,7 @@ public class PatientService {
         patientRepository.deleteById(id);
     }
 
+    public Patient findByEmail(String email) {
+        return patientRepository.findByEmail(email);
+    }
 }

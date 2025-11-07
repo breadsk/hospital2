@@ -59,4 +59,49 @@ public class PatientServiceTest {
         assertEquals(id, found.getId());
     }
 
+    @Test
+    public void testSave() {
+        Patient patient = new Patient(1L, // Long, no int
+                "12345678-9", // RUT válido
+                "Nicolas",
+                "Caceres",
+                LocalDate.of(1983, 9, 13), // LocalDate, no String
+                "nicolas.programador@gmail.com");
+        when(patientRepository.save(patient)).thenReturn(patient);
+
+        Patient saved = patientService.save(patient);
+        assertNotNull(saved);
+        assertEquals("nicolas.programador@gmail.com", saved.getEmail());
+    }
+
+    @Test
+    public void testDelete() {
+        Long id = 1L;
+        doNothing().when(patientRepository).deleteById(id);
+
+        patientService.delete(id);
+        verify(patientRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void testFindByEmail() {
+        String email = "nicolas.programador@gmail.com";
+        Patient patient = new Patient(1L, // Long, no int
+                "12345678-9", // RUT válido
+                "Nicolas",
+                "Caceres",
+                LocalDate.of(1983, 9, 13), // LocalDate, no String
+                "nicolas.programador@gmail.com");
+
+        when(patientRepository.findByEmail(email)).thenReturn(patient);
+
+        // Llama al método findByCodigo() del servicio.
+        Patient found = patientService.findByEmail(email);
+
+        // Verifica que la Carrera devuelta no sea nula y que su código coincida con el
+        // código esperado.
+        assertNotNull(found);
+        assertEquals(email, found.getEmail());// Este es el que comprueba que me retorne lo mismo
+        // Que le envie en mi mock
+    }
 }
